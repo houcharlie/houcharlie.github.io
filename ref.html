@@ -1,0 +1,229 @@
+<html><head>
+    <title>Ricson Cheng</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      
+  html {
+      -webkit-text-size-adjust: 100%;
+  }
+  
+  h3 {
+      font-weight : 400;
+      font-size: 1.5em;
+  }
+  
+  h4 {
+      font-weight : 300;
+      font-size: 1.3em;
+  }
+  
+  p {
+      
+  }
+  
+  * {
+      font-family: "Helvetica";
+  }
+      
+  body {
+      margin : auto;
+      margin-top : 0;
+      margin-bottom : 0;
+      padding : 10px;
+      font-size: 1.15em;
+  }
+  
+  .dark-mode {
+      background-color: black;
+      color: white;
+  }
+  
+  pre {
+      white-space: pre-wrap;
+      font-size: 1em;
+  }
+  
+  img {
+      max-width: 100%;
+      height: auto;
+  }
+  
+  table { border-spacing: 1em; }
+  
+  .ptable {
+      border-spacing: 0em;
+      margin-top: 0;
+      margin-bottom:0;
+      padding:0;
+  }
+  
+  .project {
+      width: 32em;
+      /* max-width:90%; */
+  }
+  
+  a
+  {
+      text-decoration: none;
+      color: #0000cc;
+  }
+  
+  .dark-mode a
+  {
+      color: #bbbbff;
+  }
+  
+  br.big {
+  line-height: 180%;
+  }
+  
+  .newbutton {
+      border: none;
+      /* color: none; */
+      padding: 0;
+      background: none;
+      color: #888888;
+      font-size: 1.0em;
+  }
+  
+    </style>
+  
+    <script>
+  
+      function myFunction() {
+      var element = document.body;
+      element.classList.toggle("dark-mode");
+      }
+      </script>
+    
+  </head>
+  
+  <body>
+  <div style="text-align:right; margin:0; height: 0px;"><button class="newbutton" onclick="myFunction()">dark</button></div>
+    <center>
+  
+      <table cellpadding="10px">
+        <tbody><tr>
+          <td style="text-align:left">
+    <pre><h3>Ricson<br>Cheng</h3></pre>
+      </td><td>
+    <picture>
+      <source type="image/webp" srcset="portrait_small2.webp">
+      <img src="portrait_small2.png" width="100">
+    </picture>
+  </td>
+    </tr>
+    </tbody></table>
+  
+  </center>
+    
+  <!--   <div style="margin: auto; line-height:150%; width:540px; max-width: 95%; "> -->
+  <!--     <center> -->
+  <!--       I'm currently at Jane Street. Previously, I worked on self-driving at Uber ATG, and before that, I did my undergrad at CMU. -->
+  <!--       <a href="contact.html" >Contact</a>. <\!-- and <a href="blog/index.html" >Blog</a>.</center>-\-> -->
+  <!--   </div> -->
+    <!-- </center> -->
+    
+  <br>
+  <hr style="border-top: 1px solid #ccc; width:1000px; max-width: 95%">
+  <br>
+  <center><h4>Personal Projects</h4></center>
+  <center><table cellpadding="10px" class="ptable">
+      <tbody><tr><td class="project">
+          <div style="float: right"><a href="https://gist.github.com/ricsonc/a9af2ad96d411d2d1bd6f5f7f385bb60">(code)</a></div><center>Torch-ΛCDM</center>
+        <br>
+        Simulations of the universe at the largest scales, such as the <a href="https://en.wikipedia.org/wiki/Millennium_Run">"Millenium Run"</a> consume centuries of CPU-time in the name of advancing cosmology. But can we carry out similar experiments on a commodity GPU by leveraging the power of pytorch?
+        <br><br>
+        I was able to generate a web <a href="https://en.wikipedia.org/wiki/Observable_universe#Large-scale_structure">structure</a> of "filaments" in a system consisting of 4 million particles in under an hour, although I suspect my initial conditions are slightly off.
+      </td>
+      <td>
+        <picture><img src="lcdm_small.jpg" width="200"></picture>
+      </td>
+    </tr>
+    <tr><td><!-- <hr style="border-top: 1px solid #ccc; width:32em; max-width:95%"></td></tr> -->
+    </td></tr><tr><td class="project">
+        <div style="float: right"><a href="https://github.com/ricsonc/transformers-play-chess">(code)</a></div><center>Blindfold Computer Chess</center>
+        <br>
+        A single character of english text contains roughly <a href="https://scholar.google.com/scholar?oi=bibs&amp;hl=en&amp;cluster=4168938754068341079">1 bit of shannon entropy</a>. What about a single move in a game of chess?
+        <br><br>
+        Blindfold chess is difficult for humans, but trivial for computers, which have really good memory. But neural networks are often forgetful. Can we use this to make blindfold chess difficult for computers?
+        <br><br>
+        Answer: About 2 bits, and Yes. 
+      </td>
+      <td>
+        <picture><img src="cut.gif" width="200"></picture>
+      </td>
+    </tr>
+    <tr><td><!-- <hr style="border-top: 1px solid #ccc; width:32em; max-width:95%"></td></tr> -->
+    </td></tr><tr><td class="project">
+        <div style="float: right"><a href="https://github.com/ricsonc/more-pixels-less-noise">(code)</a></div><center>More Pixels, Less Noise</center>
+        <br>
+        A modern phone is capable of taking a dozen images in a split second and processing them into a single enhanced image to deal with low light conditions. Mysteriously, this capability is absent from most (all?) non-phone cameras. I attempt to reimplement some of the <a href="https://arxiv.org/abs/1905.03277">published algorithms</a> in this area to resolve this issue.
+      </td>
+      <td>
+        <picture><img src="comparison_small.jpg" width="200"></picture>
+      </td>
+    </tr>
+    <tr><td><!-- <hr style="border-top: 1px solid #ccc; width:32em; max-width:95%"></td></tr>   -->
+    </td></tr><tr><td class="project">
+        <div style="float: right"><a href="https://github.com/ricsonc/cantor-search">(code)</a></div><center>Impossible Search -- in Python</center>
+        <br>
+        In a <a href="http://math.andrej.com/2007/09/28/seemingly-impossible-functional-programs/">blog post</a>, Martin Escardo describes how one can search the space of infinite binary sequences (given any search predicate). What sounds like it should be uncomputable is slickly solved in a dozen lines of Haskell.
+        <br><br>
+        Too slick in fact -- I had to reimplement the algorithm in Python (with much less elegance) before I could figure out what was going on. 
+      </td>
+      <td>
+        <center><h1 style="font-size: 2.75em">{0,1}<sup>ω</sup></h1></center>
+      </td>
+    </tr>
+    
+  </tbody></table></center>
+  <br><br><br>
+  <hr style="border-top: 1px solid #ccc; width:1000px; max-width: 95%">
+  <br>
+  <center><h4>Publications</h4></center>
+  <center>
+  <table>
+    <tbody><tr>
+      <td nowrap="" style="vertical-align: top; text-align:center">
+        <a href="https://arxiv.org/pdf/1901.00003.pdf">PDF</a><br class="big">
+        <a href="grnn/index.html">Site</a>
+      </td>
+      <td>Learning Spatial Common Sense with Geometry-Aware Recurrent Networks.<br>H. Tung*, R. Cheng*, and K. Fragkiadaki.<br>CVPR / Conference on Computer Vision and Pattern Recognition (Oral) 2019.</td>
+    </tr>
+    <tr>
+      <td nowrap="" style="vertical-align: top; text-align:center">
+        <a href="https://arxiv.org/pdf/1811.01292.pdf">PDF</a><br class="big">
+        <a href="geometryaware/index.html">Site</a>      
+      </td>
+      <td>Active Geometry-Aware Visual Recognition in Cluttered Scenes.<br>R. Cheng*, Z. Wang*, and K. Fragkiadaki.<br>NeurIPS / Advances in Neural Information Processing Systems 2018.</td>
+    </tr>
+    <tr>
+      <td nowrap="" style="vertical-align: top; text-align:center">
+        <a href="https://arxiv.org/pdf/1811.08067.pdf">PDF</a>
+      </td>
+      <td>Reinforcement Learning of Active Vision for Manipulating Objects under Occlusions.<br>R. Cheng, A. Agarwal, and K. Fragkiadaki.<br>CoRL / Conference on Robotic Learning 2018.</td>
+    </tr>
+    <tr>
+      <td nowrap="" style="vertical-align: top; text-align:center"><a href="alcob2018.pdf">PDF</a></td>
+      <td>Reconciliation Feasibility of Non-binary Gene Trees under a Duplication-Loss-Coalescence Model.<br>R. Cheng, M. Dohlen*, C. Pekker*, G. Quiroz, J. Wang, R. Libeskind-Hadas, and Y. Wu.<br>AlCoB / Proceedings of the 5th International Conference on Algorithms for Computational Biology 2018.</td>
+    </tr>
+    <tr>
+      <td nowrap="" style="vertical-align: top; text-align:center"><a href="disneypaper.pdf">PDF</a></td>
+      <td>Learning and Reusing Dialog for Repeated Interactions with a Situated Social Agent.<br>J. Kennedy, I. Leite, A. Pereira, M. Sun, B. Li, R. Jain, R. Cheng, E. Pincus, E. Carter, and J. Lehman.<br>IVA / 17th International Conference on Intelligent Virtual Agents 2017.</td>
+    </tr>
+    <tr>
+      <td nowrap="" style="vertical-align: top; text-align:center"><a href="dlc_complexity.pdf">PDF</a></td>
+      <td>On the Computational Complexity of the Maximum Parsimony Reconciliation Problem <br>in the Duplication-Loss-Coalescence Model.<br>D. Bork, R. Cheng, J. Wang, J. Sung, and R. Libeskind-Hadas.<br>AlMoB / Algorithms for Molecular Biology 2017.</td>
+    </tr>
+    <tr>
+      <td nowrap="" style="vertical-align: top; text-align:center"><a href="alcob2017.pdf">PDF</a></td>
+      <td>Clustering the Space of Maximum Parsimony Reconciliations in the Duplication-Transfer-Loss Model.<br>A. Ozdemir, M. Sheely, D. Bork, R. Cheng, R. Hulett, J. Sung, J. Wang, and R. Libeskind-Hadas.<br>AlCoB / Proceedings of the 4th International Conference on Algorithms for Computational Biology 2017.</td>
+    </tr>
+    <!-- <tr> -->
+    <!--   <td></td> -->
+    <!--   <td>* <font style="font-size: 80%">equal contribution</font></td> -->
+    <!-- </tr> -->
+  </tbody></table>
+  </center>
+  </body></html>
