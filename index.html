@@ -5,151 +5,105 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Charlie Hou</title>
   <meta name="description" content="Charlie Hou's research, papers, and talks" />
-  <meta property="og:title" content="Charlie Hou" />
-  <meta property="og:description" content="Charlie Hou's research, papers, and talks" />
-  <meta property="og:type" content="website" />
   <meta name="color-scheme" content="light" />
   <style>
-    :root {
-      --bg: #fff;
-      --fg: #111;
-      --muted: #555;
-      --link: #0645ad;
-      --maxw: 680px;     /* content column width */
-      --photo: 220px;    /* square photo size */
-      --gap: 40px;       /* space between photo and content */
-      --pagepad: 1rem;   /* side padding on small screens */
+    :root{
+      --bg:#fff; --fg:#111; --muted:#555; --link:#0645ad;
+      --maxw:680px;          /* centered text column width */
+      --photo:220px;         /* square photo size */
+      --gap:40px;            /* space between photo and text column */
+      --overhang:40px;       /* push photo further left than the column */
+      --pagepad:1rem;
     }
 
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      font: 18px/1.6 Georgia, "Times New Roman", Times, serif;
-      color: var(--fg);
-      background: var(--bg);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+    html,body{height:100%}
+    body{
+      margin:0;
+      font:18px/1.6 Georgia,"Times New Roman",Times,serif;
+      color:var(--fg); background:var(--bg);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
-    a { color: var(--link); text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    a{color:var(--link); text-decoration:none}
+    a:hover{text-decoration:underline}
 
-    /* Header: name + links, NO divider line */
-    header { /* intentionally no border-bottom */ }
-    .header-wrap {
-      width: calc(var(--maxw) + var(--photo) + var(--gap));
-      max-width: calc(100% - 2*var(--pagepad));
-      margin: 0 auto;
-      padding: 1rem var(--pagepad);
+    /* HEADER (name left, links right), no divider */
+    header{padding:1rem var(--pagepad)}
+    .nav{
+      max-width:1100px; margin:0 auto;
+      display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
+      font-size:16px; line-height:1.4;
     }
-    .nav {
-      display: flex; flex-wrap: wrap; gap: .75rem 1rem; align-items: baseline;
-      font-size: 16px; line-height: 1.4;
-    }
-    .brand { font-weight: 700; margin-right: .5rem; }
-    .nav a { color: inherit; }
+    .brand{font-weight:700}
 
-    /* Main wrappers */
-    main { padding: 0 var(--pagepad); }
+    /* HERO: text column centered; photo sits to the LEFT of that column */
+    .hero{
+      position:relative;
+      width:var(--maxw); margin:1.25rem auto 2rem;
+      min-height:var(--photo);   /* so the photo doesn't collapse the section */
+      padding:0 var(--pagepad);
+      box-sizing:content-box;
+    }
+    .hero .photo{
+      position:absolute; top:0;
+      left:calc(-1 * (var(--photo) + var(--gap) + var(--overhang)));
+      width:var(--photo); height:var(--photo);
+      object-fit:cover; border-radius:0; border:1px solid #eaeaea; display:block;
+    }
+    .intro .title{margin:0 0 .5rem; font-size:18px; font-weight:700; line-height:1.4}
+    .muted{color:var(--muted)}
 
-    /* HERO: photo left, centered content column. Name NOT repeated here */
-    .hero {
-      width: calc(var(--maxw) + var(--photo) + var(--gap));
-      max-width: calc(100% - 2*var(--pagepad));
-      margin: 1.25rem auto 2rem;
-    }
-    .hero-inner {
-      display: grid;
-      grid-template-columns: var(--photo) var(--gap) minmax(0, var(--maxw));
-      align-items: start;
-    }
-    .hero .photo {
-      width: var(--photo); height: var(--photo);
-      object-fit: cover;
-      border-radius: 0;                 /* square */
-      border: 1px solid #eaeaea;
-      display: block;
-    }
-    .intro .title { margin: 0 0 .5rem; font-size: 18px; line-height: 1.4; font-weight: 700; }
-    .muted { color: var(--muted); }
-
-    /* Centered content column for lists/sections */
-    .content {
-      width: var(--maxw);
-      max-width: calc(100% - 2*var(--pagepad));
-      margin: 0 auto;
-    }
-
-    section { margin: 2rem 0; }
-    h2 { font-size: 20px; margin: 0 0 .6rem; font-weight: 700; }
+    /* CONTENT: all text (Papers, Talks, etc.) shares this centered column */
+    .content{width:var(--maxw); margin:0 auto; padding:0 var(--pagepad)}
+    section{margin:2rem 0}
+    h2{font-size:20px; margin:0 0 .6rem; font-weight:700}
 
     /* Lists: date column like “YYYY Mon” */
-    .list { list-style: none; padding: 0; margin: .25rem 0 0; }
-    .list li { margin: .35rem 0; }
-    .list time {
-      display: inline-block;
-      width: 9ch;               /* aligns date column */
-      color: var(--muted);
-      margin-right: .25rem;
-      white-space: nowrap;
-    }
-    .tiny { color: var(--muted); }
+    .list{list-style:none; padding:0; margin:.25rem 0 0}
+    .list li{margin:.35rem 0}
+    .list time{display:inline-block; width:9ch; color:var(--muted); margin-right:.25rem; white-space:nowrap}
+    .tiny{color:var(--muted)}
 
-    footer {
-      width: var(--maxw);
-      max-width: calc(100% - 2*var(--pagepad));
-      margin: 3rem auto 1rem;
-      color: var(--muted);
-      font-size: 16px;
-    }
+    footer{width:var(--maxw); margin:3rem auto 1rem; color:var(--muted); font-size:16px; padding:0 var(--pagepad)}
 
     /* Mobile: stack photo above text */
-    @media (max-width: 820px) {
-      .hero-inner {
-        grid-template-columns: 1fr;
-        row-gap: 1rem;
-        justify-items: start;
-      }
-      .hero, .header-wrap { width: 100%; }
-      .hero .photo { width: 180px; height: 180px; }
-      body { font-size: 17px; }
-      .nav { font-size: 15px; }
+    @media (max-width: 900px){
+      .hero{width:calc(100% - 2*var(--pagepad)); min-height:auto}
+      .hero .photo{position:static; margin:0 0 1rem 0; width:180px; height:180px}
+      body{font-size:17px}
+      .nav{font-size:15px}
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="header-wrap">
-      <nav class="nav" aria-label="Primary">
-        <div class="brand">Charlie Hou</div>
+    <div class="nav" aria-label="Primary">
+      <div class="brand">Charlie Hou</div>
+      <div class="links">
         <a href="#home">Home</a>
         <a href="#papers">Papers</a>
         <a href="#blog">Blog</a>
         <a href="#thoughts">Thoughts</a>
-      </nav>
+      </div>
     </div>
   </header>
 
   <main>
-    <!-- HERO: photo left, content centered (no repeated name here) -->
+    <!-- HERO: centered text column; photo sits further left -->
     <section id="home" class="hero">
-      <div class="hero-inner intro">
-        <img class="photo" src="me.jpg" alt="Portrait of Charlie Hou" />
-        <div aria-hidden="true"></div> <!-- gap column -->
-        <div>
-          <p class="title">AI researcher / engineer</p>
-          <p class="muted">I am an AI research scientist at Meta. I work on synthetic data, privacy, and retrieval.</p>
-          <p>
-            <a href="cv.pdf">CV</a> /
-            <a href="https://scholar.google.com/citations?user=92wmC6gAAAAJ&hl=en">Google Scholar</a> /
-            <a href="https://x.com/hou_char">Twitter</a> /
-            <a href="https://www.linkedin.com/in/charlie-hou-027a19113/">LinkedIn</a> /
-            <a href="mailto:charlie@example.com">Email</a>
-          </p>
-        </div>
+      <img class="photo" src="me.jpg" alt="Portrait of Charlie Hou" />
+      <div class="intro">
+        <p class="title">AI researcher / engineer</p>
+        <p class="muted">I am an AI research scientist at Meta. I work on synthetic data, privacy, and retrieval.</p>
+        <p>
+          <a href="https://x.com/hou_char">Twitter</a> /
+          <a href="cv.pdf">CV</a> /
+          <a href="https://scholar.google.com/citations?user=92wmC6gAAAAJ&hl=en">Google scholar</a> /
+          <a href="mailto:charlie@example.com">Email</a>
+        </p>
       </div>
     </section>
 
-    <!-- Centered content column -->
+    <!-- All sections share the same centered column -->
     <div class="content">
       <section id="papers" aria-labelledby="papers-h">
         <h2 id="papers-h">Papers</h2>
@@ -174,153 +128,61 @@
       </section>
     </div>
 
-    <footer>
-      © <span id="year"></span> Charlie Hou
-    </footer>
+    <footer>© <span id="year"></span> Charlie Hou</footer>
   </main>
 
   <script>
-    // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Helpers
-    const esc = (s) => String(s ?? "").replace(/[&<>"]/g, c => (
-      {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]
-    ));
+    const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
     const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const stamp = (dstr) => {
-      const d = new Date(dstr || '1970-01-01');
-      if (isNaN(d.getTime())) return '';
-      return `${d.getUTCFullYear()} ${mon[d.getUTCMonth()]}`;
-    };
+    const stamp = dstr => { const d=new Date(dstr||'1970-01-01'); return isNaN(d)?'':`${d.getUTCFullYear()} ${mon[d.getUTCMonth()]}` };
 
-    // Render list items
-    function renderEntry(p) {
-      const li = document.createElement('li');
+    function renderEntry(p){
+      const li=document.createElement('li');
+      const t=document.createElement('time'); const lbl=stamp(p.date) || (p.year||'');
+      t.textContent=lbl; if(p.date) t.setAttribute('datetime', new Date(p.date).toISOString().slice(0,10)); li.appendChild(t);
 
-      const timeEl = document.createElement('time');
-      const label = stamp(p.date) || (p.year || '');
-      timeEl.textContent = label;
-      if (p.date) timeEl.setAttribute('datetime', new Date(p.date).toISOString().slice(0,10));
-      li.appendChild(timeEl);
+      const primary=(p.links && (p.links.paper||p.links.project||p.links.blog||p.links.code)) || p.link || '#';
+      const a=document.createElement('a'); a.href=primary; a.target='_blank'; a.rel='noreferrer'; a.innerHTML=' '+esc(p.title||'Untitled'); li.appendChild(a);
 
-      const primary =
-        (p.links && (p.links.paper || p.links.project || p.links.blog || p.links.code)) ||
-        p.link || '#';
-      const a = document.createElement('a');
-      a.href = primary; a.target = '_blank'; a.rel = 'noreferrer';
-      a.innerHTML = ' ' + esc(p.title || 'Untitled');
-      li.appendChild(a);
+      const bits=[]; if(p.venue) bits.push(esc(p.venue)); if(p.notes) bits.push(esc(p.notes));
+      if(bits.length){ const span=document.createElement('span'); span.className='tiny'; span.textContent=` — ${bits.join(' · ')}`; li.appendChild(span); }
 
-      const bits = [];
-      if (p.venue) bits.push(esc(p.venue));
-      if (p.notes) bits.push(esc(p.notes));
-      if (bits.length) {
-        const span = document.createElement('span');
-        span.className = 'tiny';
-        span.textContent = ` — ${bits.join(' · ')}`;
-        li.appendChild(span);
-      }
-
-      // Optional tags (custom labels like "(youtube)")
-      if (Array.isArray(p.tags)) {
-        for (const tag of p.tags) {
-          const sep = document.createElement('span');
-          sep.className = 'tiny'; sep.textContent = ' · ';
-          li.appendChild(sep);
-          if (tag.href) {
-            const l = document.createElement('a');
-            l.href = tag.href; l.target = '_blank'; l.rel = 'noreferrer';
-            l.textContent = `(${tag.text})`;
-            li.appendChild(l);
-          } else {
-            const s = document.createElement('span');
-            s.className = 'tiny';
-            s.textContent = `(${tag.text})`;
-            li.appendChild(s);
-          }
-        }
-      } else if (p.links) {
-        // Fallback to fixed labels
-        const order = ['paper','project','blog','code'];
-        const labels = {paper:'(paper)', project:'(project)', blog:'(blog)', code:'(code)'};
-        for (const k of order) {
-          if (p.links[k]) {
-            const sep = document.createElement('span');
-            sep.className = 'tiny'; sep.textContent = ' · ';
-            const l = document.createElement('a');
-            l.href = p.links[k]; l.target = '_blank'; l.rel = 'noreferrer';
-            l.textContent = labels[k];
-            li.appendChild(sep); li.appendChild(l);
-          }
-        }
-      }
-
+      if(p.links){ const order=['paper','project','blog','code'], labels={paper:'(paper)',project:'(project)',blog:'(blog)',code:'(code)'}; 
+        for(const k of order){ if(p.links[k]){ const sep=document.createElement('span'); sep.className='tiny'; sep.textContent=' · ';
+          const l=document.createElement('a'); l.href=p.links[k]; l.target='_blank'; l.rel='noreferrer'; l.textContent=labels[k];
+          li.appendChild(sep); li.appendChild(l); } } }
       return li;
     }
 
-    // Load Papers
     (async function loadPapers(){
-      const listEl = document.getElementById('papers-list');
-      const loadingEl = document.getElementById('papers-loading');
-      try {
-        const res = await fetch('papers.json', { cache: 'no-store' });
-        if (!res.ok) throw new Error('Failed to fetch papers.json');
-        const data = await res.json();
-        if (!Array.isArray(data)) throw new Error('papers.json must be an array');
-
-        const items = data.slice().sort((a,b) =>
-          Date.parse(b.date || '1970-01-01') - Date.parse(a.date || '1970-01-01')
-        );
-
-        const frag = document.createDocumentFragment();
-        for (const p of items) frag.appendChild(renderEntry(p));
-
-        listEl.innerHTML = '';
-        listEl.appendChild(frag);
-        listEl.hidden = false;
-        loadingEl?.remove();
-      } catch (e) {
-        if (loadingEl) loadingEl.textContent = 'Could not load papers.json';
-        console.error(e);
-      }
+      const listEl=document.getElementById('papers-list'); const loading=document.getElementById('papers-loading');
+      try{
+        const res=await fetch('papers.json',{cache:'no-store'}); if(!res.ok) throw new Error('fetch papers.json failed');
+        const data=await res.json(); if(!Array.isArray(data)) throw new Error('papers.json must be an array');
+        const items=data.slice().sort((a,b)=>Date.parse(b.date||'1970-01-01')-Date.parse(a.date||'1970-01-01'));
+        const frag=document.createDocumentFragment(); for(const p of items) frag.appendChild(renderEntry(p));
+        listEl.innerHTML=''; listEl.appendChild(frag); listEl.hidden=false; loading?.remove();
+      }catch(e){ if(loading) loading.textContent='Could not load papers.json'; console.error(e); }
     })();
 
-    // Load Talks & Media (supports custom label tags like "(youtube)")
     (async function loadTalks(){
-      const listEl = document.getElementById('talks-list');
-      const loadingEl = document.getElementById('talks-loading');
-      try {
-        const res = await fetch('talks.json', { cache: 'no-store' });
-        if (!res.ok) throw new Error('Failed to fetch talks.json');
-        const data = await res.json();
-        if (!Array.isArray(data)) throw new Error('talks.json must be an array');
-
-        const items = data.slice().sort((a,b) =>
-          Date.parse(b.date || '1970-01-01') - Date.parse(a.date || '1970-01-01')
-        );
-
-        const frag = document.createDocumentFragment();
-        for (const t of items) {
-          const entry = {
-            date: t.date,
-            title: t.title || 'Talk',
-            link: t.link || '#',
-            venue: t.venue,
-            notes: t.notes,
-            tags: t.label ? [{ text: t.label, href: t.link }] : undefined
-          };
-          frag.appendChild(renderEntry(entry));
+      const listEl=document.getElementById('talks-list'); const loading=document.getElementById('talks-loading');
+      try{
+        const res=await fetch('talks.json',{cache:'no-store'}); if(!res.ok) throw new Error('fetch talks.json failed');
+        const data=await res.json(); if(!Array.isArray(data)) throw new Error('talks.json must be an array');
+        const items=data.slice().sort((a,b)=>Date.parse(b.date||'1970-01-01')-Date.parse(a.date||'1970-01-01'));
+        const frag=document.createDocumentFragment();
+        for(const t of items){
+          frag.appendChild(renderEntry({
+            date:t.date, title:t.title||'Talk',
+            links: t.link ? {project:t.link} : undefined,
+            notes: t.venue || t.notes
+          }));
         }
-
-        listEl.innerHTML = '';
-        listEl.appendChild(frag);
-        listEl.hidden = false;
-        loadingEl?.remove();
-      } catch (e) {
-        if (loadingEl) loadingEl.textContent = 'Could not load talks.json';
-        console.error(e);
-      }
+        listEl.innerHTML=''; listEl.appendChild(frag); listEl.hidden=false; loading?.remove();
+      }catch(e){ if(loading) loading.textContent='Could not load talks.json'; console.error(e); }
     })();
   </script>
 </body>
