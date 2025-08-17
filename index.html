@@ -8,7 +8,7 @@
   <meta property="og:title" content="Charlie Hou" />
   <meta property="og:description" content="Charlie Hou's research, papers, and talks" />
   <meta property="og:type" content="website" />
-  <meta name="color-scheme" content="light dark" />
+  <meta name="color-scheme" content="light" />
   <style>
     :root {
       --bg: #ffffff;
@@ -17,15 +17,6 @@
       --link: #0a58ca;
       --border: #e5e5e5;
       --maxw: 760px;
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0b0b0b;
-        --fg: #f4f4f4;
-        --muted: #b5b5b5;
-        --link: #6ba8ff;
-        --border: #222;x
-      }
     }
     body {
       margin: 0;
@@ -89,38 +80,8 @@
   <script>
     // Update year
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // Load papers.json dynamically
-    fetch('papers.json')
-      .then(response => response.json())
-      .then(papers => {
-        const list = document.getElementById('papers-list');
-        papers.forEach(p => {
-          const li = document.createElement('li');
-          li.innerHTML = `<time datetime="${p.date}">${p.displayDate}</time>
-                          <a href="${p.link}" target="_blank">${p.title}</a>`;
-          list.appendChild(li);
-        });
-      })
-      .catch(err => {
-        console.error('Error loading papers.json', err);
-      });
-  </script>
-  <script>
-    /**
-     * Auto-populate Papers from papers.json
-     * Expected schema (array):
-     * [
-     *   {
-     *     "title": "Chain-of-thought prompting elicits reasoning in language models",
-     *     "authors": ["Your Name", "Coauthor A", "Coauthor B"],
-     *     "venue": "ICML",
-     *     "date": "2025-07-12",   // ISO 8601 date string
-     *     "links": {"paper": "https://arxiv.org/abs/xxxx", "code": "https://github.com/...", "project": "https://...", "blog": "https://..."},
-     *     "notes": "Oral"          // optional, e.g., Oral/Spotlight/Best Paper
-     *   }
-     * ]
-     */
+  
+    // Papers loader (supports both schemas):
     (async function loadPapers(){
       const listEl = document.getElementById('papers-list');
       const loadingEl = document.getElementById('papers-loading');
@@ -129,45 +90,41 @@
         if (!res.ok) throw new Error('Failed to fetch papers.json');
         const data = await res.json();
         if (!Array.isArray(data)) throw new Error('papers.json must be an array');
-
-        // sort by date desc (fallback to 1970 if missing)
-        const items = data.slice().sort((a,b) => {
-          const ta = Date.parse(a.date || '1970-01-01');
-          const tb = Date.parse(b.date || '1970-01-01');
-          return tb - ta;
-        });
-
+  
+        // Sort descending by date (fallback to 1970)
+        const items = data.slice().sort((a,b) =>
+          Date.parse(b.date || '1970-01-01') - Date.parse(a.date || '1970-01-01')
+        );
+  
         const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-        const esc = (s) => String(s).replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
-
+        const esc = (s) => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  
         const frag = document.createDocumentFragment();
         for (const p of items) {
           const li = document.createElement('li');
+  
+          // Date badge
           const d = new Date(p.date || '1970-01-01');
-          const yyyy = d.getUTCFullYear();
-          const mm = d.getUTCMonth();
           const hasDate = !isNaN(d.getTime());
-
           const time = document.createElement('time');
           if (hasDate) {
             time.setAttribute('datetime', d.toISOString().slice(0,10));
-            time.textContent = `${yyyy} ${mon[mm]}`;
+            time.textContent = `${d.getUTCFullYear()} ${mon[d.getUTCMonth()]}`;
           } else {
             time.textContent = p.year || '';
           }
           li.appendChild(time);
-
+  
+          // Title + primary link (prefer links.paper, fall back to p.link)
+          const primaryHref = (p.links && (p.links.paper || p.links.project || p.links.blog || p.links.code)) || p.link || '#';
           const titleA = document.createElement('a');
-          // prefer paper link, otherwise any first link
-          const primaryHref = (p.links && (p.links.paper || p.links.project || p.links.blog || p.links.code)) || '#';
           titleA.href = primaryHref;
           titleA.rel = 'noreferrer';
           titleA.target = '_blank';
-          titleA.innerHTML = esc(p.title || 'Untitled');
-          li.appendChild(document.createTextNode(' '));
+          titleA.innerHTML = ' ' + esc(p.title || 'Untitled');
           li.appendChild(titleA);
-
-          // venue / notes
+  
+          // Venue/notes
           const metaBits = [];
           if (p.venue) metaBits.push(esc(p.venue));
           if (p.notes) metaBits.push(esc(p.notes));
@@ -177,20 +134,23 @@
             span.textContent = ` — ${metaBits.join(' · ')}`;
             li.appendChild(span);
           }
-
-          // inline small links
-          const linksOrder = ['paper','project','blog','code'];
-          const linkLabels = {paper: '(paper)', project: '(project)', blog: '(blog)', code: '(code)'};
-          if (p.links && Object.keys(p.links).length) {
-            for (const k of linksOrder) {
+  
+          // Inline small links (if using the rich schema)
+          if (p.links) {
+            const order = ['paper','project','blog','code'];
+            const labels = {paper:'(paper)', project:'(project)', blog:'(blog)', code:'(code)'};
+            for (const k of order) {
               if (p.links[k]) {
-                const dot = document.createElement('span'); dot.className = 'muted'; dot.textContent = ' · ';
-                const a = document.createElement('a'); a.href = p.links[k]; a.rel = 'noreferrer'; a.target = '_blank'; a.textContent = linkLabels[k];
-                li.appendChild(dot); li.appendChild(a);
+                const sep = document.createElement('span');
+                sep.className = 'muted';
+                sep.textContent = ' · ';
+                const a = document.createElement('a');
+                a.href = p.links[k]; a.rel = 'noreferrer'; a.target = '_blank'; a.textContent = labels[k];
+                li.appendChild(sep); li.appendChild(a);
               }
             }
           }
-
+  
           frag.appendChild(li);
         }
         listEl.innerHTML = '';
@@ -203,5 +163,6 @@
       }
     })();
   </script>
+  
 </body>
 </html>
