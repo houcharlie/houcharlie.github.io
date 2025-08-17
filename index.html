@@ -1,259 +1,207 @@
-<html><head>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Charlie Hou</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-    
-html {
-    -webkit-text-size-adjust: 100%;
-}
-
-h3 {
-    font-weight : 400;
-    font-size: 1.5em;
-}
-
-h4 {
-    font-weight : 300;
-    font-size: 1.3em;
-}
-
-p {
-    
-}
-
-* {
-    font-family: "Helvetica";
-}
-    
-body {
-    margin : auto;
-    margin-top : 0;
-    margin-bottom : 0;
-    padding : 10px;
-    font-size: 1.15em;
-}
-
-.dark-mode {
-    background-color: black;
-    color: white;
-}
-
-pre {
-    white-space: pre-wrap;
-    font-size: 1em;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-table { border-spacing: 1em; }
-
-.ptable {
-    border-spacing: 0em;
-    margin-top: 0;
-    margin-bottom:0;
-    padding:0;
-}
-
-.project {
-    width: 32em;
-    /* max-width:90%; */
-}
-
-a
-{
-    text-decoration: none;
-    color: #0000cc;
-}
-
-.dark-mode a
-{
-    color: #bbbbff;
-}
-
-br.big {
-line-height: 180%;
-}
-
-.newbutton {
-    border: none;
-    /* color: none; */
-    padding: 0;
-    background: none;
-    color: #888888;
-    font-size: 1.0em;
-}
-
+  <meta name="description" content="Charlie Hou's research, papers, and talks" />
+  <meta property="og:title" content="Charlie Hou" />
+  <meta property="og:description" content="Charlie Hou's research, papers, and talks" />
+  <meta property="og:type" content="website" />
+  <meta name="color-scheme" content="light dark" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #111111;
+      --muted: #555555;
+      --link: #0a58ca;
+      --border: #e5e5e5;
+      --maxw: 760px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b0b0b;
+        --fg: #f4f4f4;
+        --muted: #b5b5b5;
+        --link: #6ba8ff;
+        --border: #222;x
+      }
+    }
+    body {
+      margin: 0;
+      font: 16px/1.65 system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--fg);
+      background: var(--bg);
+    }
+    .container { max-width: var(--maxw); margin: 0 auto; padding: 1.5rem 1rem; }
+    header { position: sticky; top: 0; backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); background: color-mix(in lab, var(--bg) 92%, transparent); }
+    .nav-inner { display: flex; justify-content: space-between; align-items: center; }
+    .brand { font-weight: 700; }
+    nav a { margin-left: 1rem; color: inherit; text-decoration: none; }
+    nav a:hover, nav a[aria-current="page"] { text-decoration: underline; }
+    .intro { display: grid; grid-template-columns: 96px 1fr; gap: 1rem; align-items: start; margin: 1rem 0 1.75rem; }
+    .intro img { width: 96px; height: 96px; border-radius: 999px; object-fit: cover; border: 1px solid var(--border); }
+    h2 { font-size: 1.25rem; margin: 2rem 0 .5rem; border-bottom: 1px solid var(--border); padding-bottom: .25rem; }
+    .list { list-style: none; padding: 0; margin: .5rem 0 0; }
+    .list li { margin: .35rem 0; }
+    .list time { color: var(--muted); margin-right: .4rem; white-space: nowrap; }
+    .muted { color: var(--muted); }
+    footer { margin: 3rem 0 1rem; color: var(--muted); font-size: .9rem; }
   </style>
+</head>
+<body>
+  <header>
+    <div class="container nav-inner">
+      <div class="brand"><a href="#home">Charlie Hou</a></div>
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#papers">Papers</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="home" class="intro">
+      <img src="me.jpg" alt="Portrait of Charlie Hou" />
+      <div>
+        <h1>Charlie Hou</h1>
+        <p class="muted">AI researcher / engineer</p>
+        <p>
+          I am an AI research scientist at Meta. I work on synthetic data, privacy, and retrieval.
+        </p>
+        <p>
+          <a href="cv.pdf">CV</a> / <a href="https://scholar.google.com/citations?user=92wmC6gAAAAJ&hl=en">Google Scholar</a> / <a href="https://x.com/hou_char">Twitter</a> / <a href="https://www.linkedin.com/in/charlie-hou-027a19113/">LinkedIn</a>
+        </p>
+      </div>
+    </section>
+
+    <section id="papers" aria-labelledby="papers-h">
+      <h2 id="papers-h">Papers</h2>
+      <div id="papers-loading" class="muted">Loading papers…</div>
+      <ul id="papers-list" class="list" hidden></ul>
+    </section>
+
+    <footer>
+      <p>© <span id="year"></span> Charlie Hou</p>
+    </footer>
+  </main>
 
   <script>
+    // Update year
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-    function myFunction() {
-    var element = document.body;
-    element.classList.toggle("dark-mode");
-    }
-    </script>
-  
-</head>
+    // Load papers.json dynamically
+    fetch('papers.json')
+      .then(response => response.json())
+      .then(papers => {
+        const list = document.getElementById('papers-list');
+        papers.forEach(p => {
+          const li = document.createElement('li');
+          li.innerHTML = `<time datetime="${p.date}">${p.displayDate}</time>
+                          <a href="${p.link}" target="_blank">${p.title}</a>`;
+          list.appendChild(li);
+        });
+      })
+      .catch(err => {
+        console.error('Error loading papers.json', err);
+      });
+  </script>
+  <script>
+    /**
+     * Auto-populate Papers from papers.json
+     * Expected schema (array):
+     * [
+     *   {
+     *     "title": "Chain-of-thought prompting elicits reasoning in language models",
+     *     "authors": ["Your Name", "Coauthor A", "Coauthor B"],
+     *     "venue": "ICML",
+     *     "date": "2025-07-12",   // ISO 8601 date string
+     *     "links": {"paper": "https://arxiv.org/abs/xxxx", "code": "https://github.com/...", "project": "https://...", "blog": "https://..."},
+     *     "notes": "Oral"          // optional, e.g., Oral/Spotlight/Best Paper
+     *   }
+     * ]
+     */
+    (async function loadPapers(){
+      const listEl = document.getElementById('papers-list');
+      const loadingEl = document.getElementById('papers-loading');
+      try {
+        const res = await fetch('papers.json', { cache: 'no-store' });
+        if (!res.ok) throw new Error('Failed to fetch papers.json');
+        const data = await res.json();
+        if (!Array.isArray(data)) throw new Error('papers.json must be an array');
 
-<body>
-  <center>
+        // sort by date desc (fallback to 1970 if missing)
+        const items = data.slice().sort((a,b) => {
+          const ta = Date.parse(a.date || '1970-01-01');
+          const tb = Date.parse(b.date || '1970-01-01');
+          return tb - ta;
+        });
 
-    <table cellpadding="10px">
-      <tbody><tr>
-        <td style="text-align:left">
-  <pre><h3>Charlie Hou</h3></pre>
-	</td><td>
-  <picture>
-    <img src="me.jpg" width="200">
-  </picture>
-</td>
-  </tr>
-  </tbody></table>
+        const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const esc = (s) => String(s).replace(/[&<>\"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
 
-<center>
-  <div style="margin: auto; width:700px; max-width: 95%; text-align: left;">
-    I am a fifth year Ph.D. student at Carnegie Mellon University advised by <a href="https://www.andrew.cmu.edu/user/gfanti/">Giulia Fanti</a>. <br><br> I work on <b>large language models (LLMs), learning-to-rank (LTR), and privacy.</b> In the past I also worked on security. 
-    <br>
-    <br>
-    Before I started at CMU, I did my undergrad at Princeton University, where I worked with <a href="https://yuxinchen2020.github.io/">Yuxin Chen</a> and <a href="https://mracz.princeton.edu/">Miklos Racz</a>.  
-    <br>
-    <br>
-    <a href="https://scholar.google.com/citations?user=92wmC6gAAAAJ&hl=en">Google Scholar</a>, <a href="https://github.com/houcharlie">Github</a>, <a href="https://www.linkedin.com/in/charlie-hou-027a19113/">LinkedIn</a>, <a href="houcharlie2.pdf">CV</a>
-    <br>
-    <br>
-    Contact me at [hou.charlie2 at gmail dot com].
-  </div>
-</center>
-  
-<br>
-<hr style="border-top: 1px solid #ccc; width:1000px; max-width: 95%">
-<br>
+        const frag = document.createDocumentFragment();
+        for (const p of items) {
+          const li = document.createElement('li');
+          const d = new Date(p.date || '1970-01-01');
+          const yyyy = d.getUTCFullYear();
+          const mm = d.getUTCMonth();
+          const hasDate = !isNaN(d.getTime());
 
-<center><h4>Work Experience</h4></center>
-<center>
-<table>
-  <tbody>
-    <tr>
-        <td style="text-align: left;"><b>Meta, AI Research Intern. </b><br> Topic: Privacy-preserving synthetic data generation using <b>large language models (LLMs)</b>.<br>Redmond, WA, Summer 2023</td>
-    </tr>
-  <tr>
-    <td style="text-align: left;"><b>Meta, AI Research Intern.</b> <br>Topic: Federated Learning for <b>large language models (LLMs)</b>.<br>Redmond, WA, Fall 2022</td>
-  </tr>
-  <tr>
-    <td style="text-align: left;"> <b>Amazon, Applied Science Intern.</b>  <br>Topic: Self-supervised learning for <b>Learning-to-rank (LTR)</b>.<br>Palo Alto, CA, Summer 2022</td>
-  </tr>
-  <tr>
-    <td style="text-align: left;"><b>Amazon, Applied Science Intern.</b>  <br>Topic: <b>Reinforcement learning</b> for sub-same day delivery optimization.<br>Seattle, WA, Summer 2021</td>
-  </tr>
-  <tr>
-    <td style="text-align: left;"><b>Uber, Research Intern.</b>  <br>Topic: Deep Radar Simulation.<br>San Francisco, CA, Summer 2019</td>
-  </tr>
-  <!-- <tr> -->
-  <!--   <td></td> -->
-  <!--   <td>* <font style="font-size: 80%">equal contribution</font></td> -->
-  <!-- </tr> -->
-</tbody></table>
-</center>
+          const time = document.createElement('time');
+          if (hasDate) {
+            time.setAttribute('datetime', d.toISOString().slice(0,10));
+            time.textContent = `${yyyy} ${mon[mm]}`;
+          } else {
+            time.textContent = p.year || '';
+          }
+          li.appendChild(time);
 
-<br>
-<hr style="border-top: 1px solid #ccc; width:1000px; max-width: 95%">
-<br>
-</center>
-<center><h4>Research</h4></center>
-<center>
-<table>
-  <tbody>
-<tr>
-    <td nowrap="" style="vertical-align: top; text-align:center">
-        <a href="https://arxiv.org/abs/2406.02958">arxiv</a><br class="big">
-    </td>
-    <td>PrE-Text: Training Language Models on Private Federated Data in the Age of LLMs<br>Charlie Hou, Akshat Shrivastava, Hongyuan Zhan, Rylan Conway, Trang Le, Adithya Sagar, Giulia Fanti, Daniel Lazar<br> ICML 2024 (Oral), ICLR 2024 PrivML workshop (Honorable Mention for Best Paper, Oral)</td>
-</tr>
-<tr>
-    <td nowrap="" style="vertical-align: top; text-align:center">
-        <a href="https://arxiv.org/abs/2402.18905">arxiv</a><br class="big">
-    </td>
-    <td>On the Convergence of Differentially-Private Fine-tuning: To Linearly Probe or to Fully Fine-tune?<br>Shuqi Ke, Charlie Hou, Giulia Fanti, Sewoong Oh<br> Under submission.</td>
-</tr>
-<tr>
-    <td nowrap="" style="vertical-align: top; text-align:center">
-        <a href="https://arxiv.org/abs/2308.00177">arxiv</a><br class="big">
-    </td>
-    <td>Pretrained deep models outperform GBDTs in Learning-To-Rank under label scarcity<br>Charlie Hou, Kiran Koshy Thekumparampil, Michael Shavlovsky, Giulia Fanti, Yesh Dattatreya, Sujay Sanghavi<br> ICML 2023 MFPL workshop (Oral)</td>
-</tr>
-  <tr>
-    <td nowrap="" style="vertical-align: top; text-align:center">
-      <a href="https://arxiv.org/abs/2302.09042">arxiv</a><br class="big">
-    </td>
-    <td>Privately Customizing Prefinetuning to Better Match User Data in Federated Learning<br>Charlie Hou, Hongyuan Zhan, Akshat Shrivastava, Sid Wang, Sasha Livshits, Giulia Fanti, Daniel Lazar<br>ICLR 2023 TrustML workshop</td>
-  </tr>
-  <tr>
-    <td nowrap="" style="vertical-align: top; text-align:center">
-      <a href="https://arxiv.org/abs/2108.06869">arxiv</a><br class="big">
-    </td>
-    <td>FedChain: Chained Algorithms for Near-Optimal Communication Cost in Federated Learning<br>Charlie Hou, Kiran K. Thekumparampil, Giulia Fanti, Sewoong Oh<br>ICLR 2022, ICML 2021 FL workshop (Oral)</td>
-  </tr>
-  <tr>
-    <td nowrap="" style="vertical-align: top; text-align:center">
-      <a href="https://arxiv.org/abs/2102.06333">arxiv</a><br class="big">
-    </td>
-    <td>Efficient Algorithms for Federated Saddle Point Optimization
-      <br>Charlie Hou, Kiran K. Thekumparampil, Giulia Fanti, Sewoong Oh<br>Preprint</td>
-  </tr>
-  <tr>
-    <td nowrap="" style="vertical-align: top; text-align:center">
-      <a href="https://arxiv.org/abs/1912.01798">arxiv</a><br class="big">
-    </td>
-    <td>SquirRL: Automating Attack Analysis on Blockchain Incentive Mechanisms with Deep Reinforcement Learning<br>Charlie Hou*, Mingxun Zhou*, Yan Ji, Phil Daian, Florian Tramer, Giulia Fanti, Ari Juels (*equal contribution)<br>NDSS 2021</td>
-  </tr>
-  <!-- <tr> -->
-  <!--   <td></td> -->
-  <!--   <td>* <font style="font-size: 80%">equal contribution</font></td> -->
-  <!-- </tr> -->
-</tbody></table>
-</center>
-<br>
-<hr style="border-top: 1px solid #ccc; width:1000px; max-width: 95%">
-<br>
-<center><h4>Awards</h4></center>
-<center>
-<table>
-  <tbody>
-    <tr>
-        <td style="text-align: left;">Honorable Mention for Best Paper Award at ICLR 2024 PrivML Workshop </td>
-      </tr>
-  <tr>
-    <td style="text-align: left;">Google Collabs Research Award ($80k grant and $20k in GCP credits) 2022. <br> With <a href="https://www.andrew.cmu.edu/user/gfanti/">Giulia Fanti</a> and <a href="https://homes.cs.washington.edu/~sewoong/">Sewoong Oh</a> </td>
-  </tr>
-  <tr>
-    <td style="text-align: left;"><a href="https://www.youtube.com/watch?v=ATmsipFdZQ4">Tiger Chef Champion</a>, 2018 </td>
-  </tr>
-  <!-- <tr> -->
-  <!--   <td></td> -->
-  <!--   <td>* <font style="font-size: 80%">equal contribution</font></td> -->
-  <!-- </tr> -->
-</tbody></table>
+          const titleA = document.createElement('a');
+          // prefer paper link, otherwise any first link
+          const primaryHref = (p.links && (p.links.paper || p.links.project || p.links.blog || p.links.code)) || '#';
+          titleA.href = primaryHref;
+          titleA.rel = 'noreferrer';
+          titleA.target = '_blank';
+          titleA.innerHTML = esc(p.title || 'Untitled');
+          li.appendChild(document.createTextNode(' '));
+          li.appendChild(titleA);
 
-<br>
-<hr style="border-top: 1px solid #ccc; width:1000px; max-width: 95%">
-<br>
-<center><h4>Professional Service</h4></center>
-<center>
-<table>
-  <tbody>
-    <tr>
-        <td style="text-align: left;">Reviewer, NeurIPS 2023 </td>
-      </tr>
-  <tr>
-    <td style="text-align: left;">Reviewer, ICLR 2023 </td>
-  </tr>
-  <!-- <tr> -->
-  <!--   <td></td> -->
-  <!--   <td>* <font style="font-size: 80%">equal contribution</font></td> -->
-  <!-- </tr> -->
-</tbody></table>
-</center>
-</body></html>
+          // venue / notes
+          const metaBits = [];
+          if (p.venue) metaBits.push(esc(p.venue));
+          if (p.notes) metaBits.push(esc(p.notes));
+          if (metaBits.length) {
+            const span = document.createElement('span');
+            span.className = 'muted';
+            span.textContent = ` — ${metaBits.join(' · ')}`;
+            li.appendChild(span);
+          }
+
+          // inline small links
+          const linksOrder = ['paper','project','blog','code'];
+          const linkLabels = {paper: '(paper)', project: '(project)', blog: '(blog)', code: '(code)'};
+          if (p.links && Object.keys(p.links).length) {
+            for (const k of linksOrder) {
+              if (p.links[k]) {
+                const dot = document.createElement('span'); dot.className = 'muted'; dot.textContent = ' · ';
+                const a = document.createElement('a'); a.href = p.links[k]; a.rel = 'noreferrer'; a.target = '_blank'; a.textContent = linkLabels[k];
+                li.appendChild(dot); li.appendChild(a);
+              }
+            }
+          }
+
+          frag.appendChild(li);
+        }
+        listEl.innerHTML = '';
+        listEl.appendChild(frag);
+        listEl.hidden = false;
+        if (loadingEl) loadingEl.remove();
+      } catch (err) {
+        if (loadingEl) loadingEl.textContent = 'Could not load papers.json';
+        console.error(err);
+      }
+    })();
+  </script>
+</body>
+</html>

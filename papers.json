@@ -1,0 +1,19 @@
+[
+    {
+        "title": "Chain-of-thought prompting elicits reasoning in language models",
+        "authors": [
+            "Your Name",
+            "Coauthor A",
+            "Coauthor B"
+        ],
+        "venue": "ICML",
+        "date": "2025-07-12", 
+        "links": {
+            "paper": "https://arxiv.org/abs/xxxx",
+            "code": "https://github.com/...",
+            "project": "https://...",
+            "blog": "https://..."
+        },
+        "notes": "Oral" 
+    }
+]
