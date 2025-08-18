@@ -1,189 +1,497 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Charlie Hou</title>
-  <meta name="description" content="Charlie Hou's research, papers, and talks" />
-  <meta name="color-scheme" content="light" />
-  <style>
-    :root{
-      --bg:#fff; --fg:#111; --muted:#555; --link:#0645ad;
-      --maxw:680px;          /* centered text column width */
-      --photo:220px;         /* square photo size */
-      --gap:40px;            /* space between photo and text column */
-      --overhang:40px;       /* push photo further left than the column */
-      --pagepad:1rem;
-    }
-
-    html,body{height:100%}
-    body{
-      margin:0;
-      font:18px/1.6 Georgia,"Times New Roman",Times,serif;
-      color:var(--fg); background:var(--bg);
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    }
-    a{color:var(--link); text-decoration:none}
-    a:hover{text-decoration:underline}
-
-    /* HEADER (name left, links right), no divider */
-    header{padding:1rem var(--pagepad)}
-    .nav{
-      max-width:1100px; margin:0 auto;
-      display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
-      font-size:16px; line-height:1.4;
-    }
-    .brand{font-weight:700}
-
-    /* HERO: text column centered; photo sits to the LEFT of that column */
-    .hero{
-      position:relative;
-      width:var(--maxw); margin:1.25rem auto 2rem;
-      min-height:var(--photo);   /* so the photo doesn't collapse the section */
-      padding:0 var(--pagepad);
-      box-sizing:content-box;
-    }
-    .hero .photo{
-      position:absolute; top:0;
-      left:calc(-1 * (var(--photo) + var(--gap) + var(--overhang)));
-      width:var(--photo); height:var(--photo);
-      object-fit:cover; border-radius:0; border:1px solid #eaeaea; display:block;
-    }
-    .intro .title{margin:0 0 .5rem; font-size:18px; font-weight:700; line-height:1.4}
-    .muted{color:var(--muted)}
-
-    /* CONTENT: all text (Papers, Talks, etc.) shares this centered column */
-    .content{width:var(--maxw); margin:0 auto; padding:0 var(--pagepad)}
-    section{margin:2rem 0}
-    h2{font-size:20px; margin:0 0 .6rem; font-weight:700}
-
-    /* Lists: date column like “YYYY Mon” */
-    .list{list-style:none; padding:0; margin:.25rem 0 0}
-    .list li{margin:.35rem 0}
-    .list time{display:inline-block; width:9ch; color:var(--muted); margin-right:.25rem; white-space:nowrap}
-    .tiny{color:var(--muted)}
-
-    footer{width:var(--maxw); margin:3rem auto 1rem; color:var(--muted); font-size:16px; padding:0 var(--pagepad)}
-
-    /* Mobile: stack photo above text */
-    @media (max-width: 900px){
-      .hero{width:calc(100% - 2*var(--pagepad)); min-height:auto}
-      .hero .photo{position:static; margin:0 0 1rem 0; width:180px; height:180px}
-      body{font-size:17px}
-      .nav{font-size:15px}
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <div class="nav" aria-label="Primary">
-      <div class="brand">Charlie Hou</div>
-      <div class="links">
-        <a href="#home">Home</a>
-        <a href="#papers">Papers</a>
-        <a href="#blog">Blog</a>
-        <a href="#thoughts">Thoughts</a>
-      </div>
-    </div>
-  </header>
-
-  <main>
-    <!-- HERO: centered text column; photo sits further left -->
-    <section id="home" class="hero">
-      <img class="photo" src="me.jpg" alt="Portrait of Charlie Hou" />
-      <div class="intro">
-        <p class="title">AI researcher / engineer</p>
-        <p class="muted">I am an AI research scientist at Meta. I work on synthetic data, privacy, and retrieval.</p>
-        <p>
-          <a href="https://x.com/hou_char">Twitter</a> /
-          <a href="cv.pdf">CV</a> /
-          <a href="https://scholar.google.com/citations?user=92wmC6gAAAAJ&hl=en">Google scholar</a> /
-          <a href="mailto:charlie@example.com">Email</a>
-        </p>
-      </div>
-    </section>
-
-    <!-- All sections share the same centered column -->
-    <div class="content">
-      <section id="papers" aria-labelledby="papers-h">
-        <h2 id="papers-h">Papers</h2>
-        <div id="papers-loading" class="muted">Loading papers…</div>
-        <ul id="papers-list" class="list" hidden></ul>
-      </section>
-
-      <section id="talks" aria-labelledby="talks-h">
-        <h2 id="talks-h">Talks &amp; Media</h2>
-        <div id="talks-loading" class="muted">Loading talks…</div>
-        <ul id="talks-list" class="list" hidden></ul>
-      </section>
-
-      <section id="blog" aria-labelledby="blog-h">
-        <h2 id="blog-h">Blog</h2>
-        <p class="muted">Coming soon.</p>
-      </section>
-
-      <section id="thoughts" aria-labelledby="thoughts-h">
-        <h2 id="thoughts-h">Thoughts</h2>
-        <p class="muted">Coming soon.</p>
-      </section>
-    </div>
-
-    <footer>© <span id="year"></span> Charlie Hou</footer>
-  </main>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-    const mon = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const stamp = dstr => { const d=new Date(dstr||'1970-01-01'); return isNaN(d)?'':`${d.getUTCFullYear()} ${mon[d.getUTCMonth()]}` };
-
-    function renderEntry(p){
-      const li=document.createElement('li');
-      const t=document.createElement('time'); const lbl=stamp(p.date) || (p.year||'');
-      t.textContent=lbl; if(p.date) t.setAttribute('datetime', new Date(p.date).toISOString().slice(0,10)); li.appendChild(t);
-
-      const primary=(p.links && (p.links.paper||p.links.project||p.links.blog||p.links.code)) || p.link || '#';
-      const a=document.createElement('a'); a.href=primary; a.target='_blank'; a.rel='noreferrer'; a.innerHTML=' '+esc(p.title||'Untitled'); li.appendChild(a);
-
-      const bits=[]; if(p.venue) bits.push(esc(p.venue)); if(p.notes) bits.push(esc(p.notes));
-      if(bits.length){ const span=document.createElement('span'); span.className='tiny'; span.textContent=` — ${bits.join(' · ')}`; li.appendChild(span); }
-
-      if(p.links){ const order=['paper','project','blog','code'], labels={paper:'(paper)',project:'(project)',blog:'(blog)',code:'(code)'}; 
-        for(const k of order){ if(p.links[k]){ const sep=document.createElement('span'); sep.className='tiny'; sep.textContent=' · ';
-          const l=document.createElement('a'); l.href=p.links[k]; l.target='_blank'; l.rel='noreferrer'; l.textContent=labels[k];
-          li.appendChild(sep); li.appendChild(l); } } }
-      return li;
-    }
-
-    (async function loadPapers(){
-      const listEl=document.getElementById('papers-list'); const loading=document.getElementById('papers-loading');
-      try{
-        const res=await fetch('papers.json',{cache:'no-store'}); if(!res.ok) throw new Error('fetch papers.json failed');
-        const data=await res.json(); if(!Array.isArray(data)) throw new Error('papers.json must be an array');
-        const items=data.slice().sort((a,b)=>Date.parse(b.date||'1970-01-01')-Date.parse(a.date||'1970-01-01'));
-        const frag=document.createDocumentFragment(); for(const p of items) frag.appendChild(renderEntry(p));
-        listEl.innerHTML=''; listEl.appendChild(frag); listEl.hidden=false; loading?.remove();
-      }catch(e){ if(loading) loading.textContent='Could not load papers.json'; console.error(e); }
-    })();
-
-    (async function loadTalks(){
-      const listEl=document.getElementById('talks-list'); const loading=document.getElementById('talks-loading');
-      try{
-        const res=await fetch('talks.json',{cache:'no-store'}); if(!res.ok) throw new Error('fetch talks.json failed');
-        const data=await res.json(); if(!Array.isArray(data)) throw new Error('talks.json must be an array');
-        const items=data.slice().sort((a,b)=>Date.parse(b.date||'1970-01-01')-Date.parse(a.date||'1970-01-01'));
-        const frag=document.createDocumentFragment();
-        for(const t of items){
-          frag.appendChild(renderEntry({
-            date:t.date, title:t.title||'Talk',
-            links: t.link ? {project:t.link} : undefined,
-            notes: t.venue || t.notes
-          }));
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Charlie Hou</title>
+    <meta name="description" content="Charlie Hou's research, papers, and talks" />
+    <meta name="color-scheme" content="light" />
+    <style>
+        :root {
+            --bg: #f9f9f9;
+            --fg: #111;
+            --muted: #555;
+            --maxw: 680px;
+            /* centered text column width */
+            --photo: 220px;
+            /* square photo size */
+            --gap: 40px;
+            /* space between photo and text column */
+            --overhang: 40px;
+            /* push photo further left than the column */
+            --pagepad: 1rem;
         }
-        listEl.innerHTML=''; listEl.appendChild(frag); listEl.hidden=false; loading?.remove();
-      }catch(e){ if(loading) loading.textContent='Could not load talks.json'; console.error(e); }
-    })();
-  </script>
+
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            margin: 0;
+            font: 16px "Franklin Gothic Book";
+            color: var(--fg);
+            background: var(--bg);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a {
+            color: #2a5d9f;
+            text-decoration: underline
+        }
+
+        a:hover {
+            text-decoration: underline
+        }
+
+        /* HEADER (name left, links right), no divider */
+        /* HEADER (name left, links right), no divider */
+        header {
+            padding: 0 var(--pagepad);
+            margin-top: 1rem;
+            /* small gap from top of page */
+        }
+
+        .nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            /* name on left, links on right */
+            align-items: baseline;
+            /* align text baselines */
+            padding: 2rem 0;
+            /* vertical breathing room */
+        }
+
+        /* the brand (your name) */
+        .brand a {
+            font-family: "Franklin Gothic Book", Arial, sans-serif;
+            font-weight: 400;
+            /* not bold */
+            font-size: 1.8rem;
+            /* bigger than links */
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* the right-side links */
+        nav {
+            display: flex;
+            gap: 4rem;
+            /* spacing between links */
+        }
+
+        nav a {
+            color: inherit;
+            /* not blue, matches text */
+            font-weight: 400;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .navlinks {
+            color: #111;
+            display: flex;
+            gap: 1.5rem;
+            /* control spacing here */
+        }
+
+        .brand {
+            font-family: "Franklin Gothic";
+            font-weight: normal;
+            /* remove bold */
+            font-size: 36px;
+            /* make bigger, tweak size as you like */
+            text-decoration: none;
+            /* optional: remove underline if it appears */
+        }
+
+        /* HERO: text column centered; photo sits to the LEFT of that column */
+        .hero {
+            position: relative;
+            width: var(--maxw);
+            margin: 1.25rem auto 2rem;
+            min-height: var(--photo);
+            /* so the photo doesn't collapse the section */
+            padding: 0 var(--pagepad);
+            box-sizing: content-box;
+        }
+
+        .hero .photo {
+            position: absolute;
+            top: 0;
+            left: calc(-1 * (var(--photo) + var(--gap) + var(--overhang)));
+            width: var(--photo);
+            height: var(--photo);
+            object-fit: cover;
+            border-radius: 0;
+            border: 1px solid #eaeaea;
+            display: block;
+        }
+
+        .intro .title {
+            margin: 0 0 .5rem;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.4
+        }
+
+        .muted {
+            color: var(--muted)
+        }
+
+        /* CONTENT: all text (Papers, Talks, etc.) shares this centered column */
+        .content {
+            width: var(--maxw);
+            margin: 0 auto;
+            padding: 0 var(--pagepad)
+        }
+
+        section {
+            margin: 2rem 0
+        }
+
+        h2 {
+            font-size: 20px;
+            margin: 0 0 .6rem;
+            font-weight: 700
+        }
+
+        /* Lists: date column like “YYYY Mon” */
+        .list {
+            list-style: none;
+            padding: 0;
+            margin: .25rem 0 0
+        }
+
+        .list li {
+            margin: .35rem 0
+        }
+
+        .list time {
+            display: inline-block;
+            width: 9ch;
+            color: var(--muted);
+            margin-right: .25rem;
+            white-space: nowrap
+        }
+
+        /* Papers list: venue offset to the left of the main column */
+        #papers-list {
+            list-style: none;
+            padding: 0;
+            margin: .25rem 0 0;
+        }
+
+        /* authors line under each paper */
+        #papers-list .authors {
+            margin-top: .25rem;
+            font-size: 0.95rem;
+            line-height: 1.45;
+        }
+
+        #papers-list .authors .me {
+            font-weight: 600;
+        }
+
+        /* optional if you want to bold your name */
+        #papers-list li {
+            display: grid;
+            grid-template-columns: 8ch 1fr;
+            /* left column width; tweak to 9–11ch if needed */
+            column-gap: 1.25rem;
+            align-items: start;
+        }
+
+        #papers-list .venue {
+            text-align: right;
+            color: var(--muted);
+            white-space: nowrap;
+            font-size: 0.95rem;
+        }
+
+        #papers-list .details {
+            line-height: 1.45;
+        }
+
+        #papers-list .details time {
+            color: var(--muted);
+            margin-right: .5rem;
+            white-space: nowrap;
+        }
+
+        .tiny {
+            color: var(--muted)
+        }
+
+        footer {
+            width: var(--maxw);
+            margin: 3rem auto 1rem;
+            color: var(--muted);
+            font-size: 16px;
+            padding: 0 var(--pagepad)
+        }
+
+        /* Mobile: stack photo above text */
+        @media (max-width: 900px) {
+            .hero {
+                width: calc(100% - 2*var(--pagepad));
+                min-height: auto
+            }
+
+            .hero .photo {
+                position: static;
+                margin: 0 0 1rem 0;
+                width: 180px;
+                height: 180px
+            }
+
+            body {
+                font-size: 17px
+            }
+
+            .nav {
+                font-size: 15px
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="nav" aria-label="Primary">
+            <div class="brand">Charlie Hou</div>
+            <div class="navlinks">
+                <a href="#home">Home</a>
+                <a href="#papers">Papers</a>
+                <a href="#talks">Talks</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO: centered text column; photo sits further left -->
+        <section id="home" class="hero">
+            <img class="photo" src="me.jpg" alt="Portrait of Charlie Hou" />
+            <div class="intro">
+                <p>Since 2024, I have worked as an AI research scientist at Meta. I work on things including (1)
+                    developing <strong>LLM reasoning models for trust and safety</strong> enforcement, and (2) improving
+                    the efficiency and quality of text extraction models <strong>(OCR/ASR)</strong>. This work has led
+                    to robust improvements in key business metrics like time spent on Instagram.</p>
+                <p>Prior to working at Meta, I obtained my Ph.D. (2019-2024) from <a href="https://www.cmu.edu/">CMU</a>
+                    advised by Prof. <a href="https://gfanti.github.io/">Giulia Fanti</a>. There I led the development
+                    of <a href="https://arxiv.org/abs/2504.16438">POPri</a>, a step-change improvement in
+                    <strong>synthetic data</strong>
+                    quality generation under privacy constraints. I also co-led <a
+                        href="https://arxiv.org/abs/1912.01798">SquirRL</a> which pioneered the use of
+                    <strong>reinforcement
+                        learning (RL)</strong> for identifying security weaknesses in blockchain protocols.
+                </p>
+                <p>Before my Ph.D., I was an undergrad at Princeton University.</p>
+                <p>
+                    <a href="https://x.com/hou_char">Twitter</a> /
+                    <a href="cv.pdf">CV</a> /
+                    <a href="https://scholar.google.com/citations?user=92wmC6gAAAAJ&hl=en">Google scholar</a> /
+                    <a href="mailto:hou.charlie2@gmail.com">Email</a> /
+                    <a href="https://www.linkedin.com/in/charlie-hou-027a19113/">Linkedin</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- All sections share the same centered column -->
+        <div class="content">
+            <section id="talks" aria-labelledby="talks-h">
+                <h2 id="talks-h">Talks</h2>
+                <div id="talks-loading" class="muted">Loading talks…</div>
+                <ul id="talks-list" class="list" hidden></ul>
+            </section>
+            <section id="papers" aria-labelledby="papers-h">
+                <h2 id="papers-h">Papers</h2>
+                <div id="papers-loading" class="muted">Loading papers…</div>
+                <ul id="papers-list" class="list" hidden></ul>
+            </section>
+
+
+        </div>
+
+        <footer>© <span id="year"></span> Charlie Hou</footer>
+    </main>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+        const mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const stamp = dstr => { const d = new Date(dstr || '1970-01-01'); return isNaN(d) ? '' : `${d.getUTCFullYear()} ${mon[d.getUTCMonth()]}` };
+        function renderPaperEntry(p) {
+            const li = document.createElement('li');
+
+            // Left column: venue (e.g., "ACL ’24")
+            const venue = document.createElement('span');
+            venue.className = 'venue';
+            venue.textContent = p.venue ? p.venue : '';
+            li.appendChild(venue);
+
+            // Right column: details (title, notes, links, authors)
+            const details = document.createElement('div');
+            details.className = 'details';
+
+            // Title (primary link)
+            const primary =
+                (p.links && (p.links.paper || p.links.project || p.links.blog || p.links.code)) ||
+                p.link || '#';
+            const a = document.createElement('a');
+            a.href = primary;
+            a.target = '_blank';
+            a.rel = 'noreferrer';
+            a.innerHTML = esc(p.title || 'Untitled');
+            details.appendChild(a);
+
+            // Inline links (paper/project/blog/code)
+            if (p.links) {
+                const order = ['paper', 'project', 'blog', 'code'];
+                const labels = { paper: '(paper)', project: '(project)', blog: '(blog)', code: '(code)' };
+                for (const k of order) {
+                    if (p.links[k]) {
+                        const sep = document.createElement('span');
+                        sep.className = 'tiny';
+                        sep.textContent = ' · ';
+                        const l = document.createElement('a');
+                        l.href = p.links[k];
+                        l.target = '_blank';
+                        l.rel = 'noreferrer';
+                        l.textContent = labels[k];
+                        details.appendChild(sep);
+                        details.appendChild(l);
+                    }
+                }
+            }
+
+            // NOTES on a new line
+            if (p.notes) {
+                const notesEl = document.createElement('div');
+                notesEl.className = 'tiny';
+                notesEl.style.marginTop = '.25rem';
+                notesEl.textContent = p.notes;
+                details.appendChild(notesEl);
+            }
+
+            // AUTHORS (array or string). Shown on its own line under the title/notes.
+            if (p.authors && (Array.isArray(p.authors) ? p.authors.length : String(p.authors).trim())) {
+                const authorsEl = document.createElement('div');
+                authorsEl.className = 'authors';
+
+                const names = (Array.isArray(p.authors) ? p.authors : [p.authors])
+                    .map(n => esc(n));
+
+                // Optional: bold your own name
+                const ME = "Charlie Hou";
+                for (let i = 0; i < names.length; i++) {
+                    if (names[i].replace(/<[^>]*>/g, '') === ME) {
+                        names[i] = `<span class="me">${names[i]}</span>`;
+                    }
+                }
+
+                authorsEl.innerHTML = names.join(', ');
+                authorsEl.style.marginTop = '.25rem';
+                details.appendChild(authorsEl);
+            }
+
+            li.appendChild(details);
+            return li;
+        }
+        function renderEntry(p) {
+            const li = document.createElement('li');
+            const t = document.createElement('time'); const lbl = stamp(p.date) || (p.year || '');
+            t.textContent = lbl; if (p.date) t.setAttribute('datetime', new Date(p.date).toISOString().slice(0, 10)); li.appendChild(t);
+
+            const primary = (p.links && (p.links.paper || p.links.project || p.links.blog || p.links.code)) || p.link || '#';
+            const a = document.createElement('a'); a.href = primary; a.target = '_blank'; a.rel = 'noreferrer'; a.innerHTML = ' ' + esc(p.title || 'Untitled'); li.appendChild(a);
+
+            const bits = []; if (p.venue) bits.push(esc(p.venue)); if (p.notes) bits.push(esc(p.notes));
+            if (bits.length) { const span = document.createElement('span'); span.className = 'tiny'; span.textContent = ` — ${bits.join(' · ')}`; li.appendChild(span); }
+
+            if (p.links) {
+                const order = ['paper', 'project', 'blog', 'code'], labels = { paper: '(paper)', project: '(project)', blog: '(blog)', code: '(code)' };
+                for (const k of order) {
+                    if (p.links[k]) {
+                        const sep = document.createElement('span'); sep.className = 'tiny'; sep.textContent = ' · ';
+                        const l = document.createElement('a'); l.href = p.links[k]; l.target = '_blank'; l.rel = 'noreferrer'; l.textContent = labels[k];
+                        li.appendChild(sep); li.appendChild(l);
+                    }
+                }
+            }
+            return li;
+        }
+
+        (async function loadPapers() {
+            const listEl = document.getElementById('papers-list'); const loading = document.getElementById('papers-loading');
+            try {
+                const res = await fetch('papers.json', { cache: 'no-store' }); if (!res.ok) throw new Error('fetch papers.json failed');
+                const data = await res.json(); if (!Array.isArray(data)) throw new Error('papers.json must be an array');
+                const items = data.slice().sort((a, b) => Date.parse(b.date || '1970-01-01') - Date.parse(a.date || '1970-01-01'));
+                const frag = document.createDocumentFragment(); for (const p of items) frag.appendChild(renderPaperEntry(p));
+                listEl.innerHTML = ''; listEl.appendChild(frag); listEl.hidden = false; loading?.remove();
+            } catch (e) { if (loading) loading.textContent = 'Could not load papers.json'; console.error(e); }
+        })();
+        function renderTalkEntry(t) {
+            const li = document.createElement('li');
+
+            // Date
+            const label = stamp(t.date) || (t.year || '');
+            if (label) {
+                const timeEl = document.createElement('time');
+                timeEl.textContent = label;
+                if (t.date) timeEl.setAttribute('datetime', new Date(t.date).toISOString().slice(0, 10));
+                li.appendChild(timeEl);
+                li.appendChild(document.createTextNode(' '));
+            }
+
+            // Title with bold replacements
+            let title = esc(t.title || 'Talk');
+            // simple replacements (case-sensitive)
+            title = title.replaceAll('OpenAI', '<strong>OpenAI</strong>');
+            title = title.replaceAll('Amazon', '<strong>Amazon</strong>');
+
+            const span = document.createElement('span');
+            span.innerHTML = title;   // safe because we only insert controlled <strong>
+            li.appendChild(span);
+
+            // Venue/notes, if present
+            if (t.venue || t.notes) {
+                const notes = [t.venue, t.notes].filter(Boolean).join(' · ');
+                const notesEl = document.createElement('span');
+                notesEl.className = 'tiny';
+                notesEl.innerHTML = ' — ' + esc(notes);
+                li.appendChild(notesEl);
+            }
+
+            return li;
+        }
+        (async function loadTalks() {
+            const listEl = document.getElementById('talks-list'); const loading = document.getElementById('talks-loading');
+            try {
+                const res = await fetch('talks.json', { cache: 'no-store' }); if (!res.ok) throw new Error('fetch talks.json failed');
+                const data = await res.json(); if (!Array.isArray(data)) throw new Error('talks.json must be an array');
+                const items = data.slice().sort((a, b) => Date.parse(b.date || '1970-01-01') - Date.parse(a.date || '1970-01-01'));
+                const frag = document.createDocumentFragment();
+                for (const t of items) {
+                    frag.appendChild(renderTalkEntry({
+                        date: t.date, title: t.title || 'Talk',
+                        links: t.link ? { project: t.link } : undefined,
+                        notes: t.venue || t.notes
+                    }));
+                }
+                listEl.innerHTML = ''; listEl.appendChild(frag); listEl.hidden = false; loading?.remove();
+            } catch (e) { if (loading) loading.textContent = 'Could not load talks.json'; console.error(e); }
+        })();
+    </script>
 </body>
+
 </html>

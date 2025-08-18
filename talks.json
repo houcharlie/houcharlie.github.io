@@ -1,5 +1,9 @@
 [
-    {"date":"2025-03-01","title":"Keynote, Columbia University DAPLab."},
-    {"date":"2024-12-01","title":"OpenAI o1 in ChatGPT","link":"https://youtu.be/...","label":"youtube"}
-  ]
+    {"date":"2025-08-13","title":"Invited talk on POPri at OpenAI"},
+    {"date":"2025-05-16","title":"Invited talk on POPri at Amazon"},
+    {"date":"2025-04-27","title":"Oral presentation on POPri at SynthData @ ICLR 2024 workshop"},
+    {"date":"2024-07-06","title":"Oral presentation on PrE-Text at ICML 2024"},
+    {"date":"2023-07-28","title":"Oral presentation on pretraining in LTR at MFPL @ ICML 2023 workshop"},
+    {"date":"2021-07-24","title":"Oral presentation on FedChain at FL @ ICML 2021 workshop"}
+]
   

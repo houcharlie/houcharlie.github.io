@@ -1,19 +1,138 @@
 [
     {
-        "title": "Chain-of-thought prompting elicits reasoning in language models",
+        "title": "POPri: Private Federated Learning using Preference-Optimized Synthetic Data",
         "authors": [
-            "Your Name",
-            "Coauthor A",
-            "Coauthor B"
+            "Charlie Hou",
+            "Mei-Yu Wang",
+            "Yige Zhu",
+            "Daniel Lazar",
+            "Giulia Fanti"
         ],
-        "venue": "ICML",
-        "date": "2025-07-12", 
+        "venue": "ICML 2025",
+        "date": "2025-04-23", 
         "links": {
-            "paper": "https://arxiv.org/abs/xxxx",
-            "code": "https://github.com/...",
-            "project": "https://...",
-            "blog": "https://..."
+            "paper": "https://arxiv.org/abs/2504.16438",
+            "code": "https://github.com/meiyuw/POPri.",
+            "data": "https://huggingface.co/hazylavender"
         },
-        "notes": "Oral" 
+        "notes": "Best paper runner-up at SynthData@ICLR 2025 workshop" 
+    },
+    {
+        "title": "PrE-Text: Training Language Models on Private Federated Data in the Age of LLMs",
+        "authors": [
+            "Charlie Hou",
+            "Akshat Shrivastava",
+            "Hongyuan Zhan",
+            "Rylan Conway",
+            "Trang Le",
+            "Adithya Sagar",
+            "Giulia Fanti",
+            "Daniel Lazar"
+        ],
+        "venue": "ICML 2024",
+        "date": "2024-06-05", 
+        "links": {
+            "paper": "https://arxiv.org/abs/2406.02958",
+            "code": "https://github.com/houcharlie/PrE-Text"
+        },
+        "notes": "Oral Presentation at ICML 2024, Best paper honorable mention at ICLR 2024 PrivML workshop" 
+    },
+    {
+        "title": "On the Convergence of Differentially-Private Fine-tuning: To Linearly Probe or to Fully Fine-tune?",
+        "authors": [
+            "Shuqi Ke",
+            "Charlie Hou",
+            "Giulia Fanti",
+            "Sewoong Oh"
+        ],
+        "venue": "(Workshop)",
+        "date": "2024-02-29", 
+        "links": {
+            "paper": "https://arxiv.org/abs/2402.18905"
+        },
+        "notes": "FITML @ NeurIPS 2024 workshop" 
+    },
+    {
+        "title": "Pretrained deep models outperform GBDTs in Learning-To-Rank under label scarcity",
+        "authors": [
+            "Charlie Hou",
+            "Kiran Koshy Thekumparampil",
+            "Michael Shavlovsky",
+            "Giulia Fanti",
+            "Yesh Dattatreya",
+            "Sujay Sanghavi"
+        ],
+        "venue": "TMLR",
+        "date": "2023-07-31", 
+        "links": {
+            "paper": "https://arxiv.org/abs/2308.00177"
+        },
+        "notes": "Oral presentation at ICML 2023 MFPL workshop" 
+    },
+    {
+        "title": "Privately Customizing Prefinetuning to Better Match User Data in Federated Learning",
+        "authors": [
+            "Charlie Hou",
+            "Hongyuan Zhan",
+            "Akshat Shrivastava",
+            "Sid Wang",
+            "Aleksandr Livshits",
+            "Giulia Fanti",
+            "Daniel Lazar"
+        ],
+        "venue": "(Workshop)",
+        "date": "2023-02-23", 
+        "links": {
+            "paper": "https://arxiv.org/abs/2308.00177"
+        },
+        "notes": "ICLR 2023 TrustML workshop" 
+    },
+    {
+        "title": "FedChain: Chained Algorithms for Near-Optimal Communication Cost in Federated Learning",
+        "authors": [
+            "Charlie Hou",
+            "Kiran Koshy Thekumparampil",
+            "Giulia Fanti",
+            "Sewoong Oh"
+        ],
+        "venue": "ICLR 2022",
+        "date": "2022-07-04", 
+        "links": {
+            "paper": "https://arxiv.org/abs/2108.06869"
+        },
+        "notes": "Oral presentation at ICML 2021 FL workshop" 
+    },
+    {
+        "title": "Efficient Algorithms for Saddle Point Optimization",
+        "authors": [
+            "Charlie Hou",
+            "Kiran Koshy Thekumparampil",
+            "Giulia Fanti",
+            "Sewoong Oh"
+        ],
+        "venue": "Arxiv",
+        "date": "2021-02-12", 
+        "links": {
+            "paper": "https://arxiv.org/abs/2102.06333"
+        },
+        "notes": "" 
+    },
+    {
+        "title": "SquirRL: Automating Attack Analysis on Blockchain Incentive Mechanisms with Deep Reinforcement Learning",
+        "authors": [
+            "Charlie Hou",
+            "Mingxun Zhou",
+            "Yan Ji",
+            "Phil Daian",
+            "Florian Tramer",
+            "Giulia Fanti",
+            "Ari Juels"
+        ],
+        "venue": "NDSS 2021",
+        "date": "2020-08-04", 
+        "links": {
+            "paper": "https://arxiv.org/abs/1912.01798"
+        },
+        "notes": "" 
     }
 ]
