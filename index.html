@@ -338,20 +338,14 @@
             venue.textContent = p.venue ? p.venue : '';
             li.appendChild(venue);
 
-            // Right column: details (title, notes, links, authors)
+            // Right column: details (title, notes, authors, links)
             const details = document.createElement('div');
             details.className = 'details';
 
-            // Title (primary link)
-            const primary =
-                (p.links && (p.links.paper || p.links.project || p.links.blog || p.links.code)) ||
-                p.link || '#';
-            const a = document.createElement('a');
-            a.href = primary;
-            a.target = '_blank';
-            a.rel = 'noreferrer';
-            a.innerHTML = esc(p.title || 'Untitled');
-            details.appendChild(a);
+            // Title (bold, no link)
+            const titleEl = document.createElement('strong');
+            titleEl.innerHTML = esc(p.title || 'Untitled');
+            details.appendChild(titleEl);
 
             // Inline links (paper/project/blog/code)
             if (p.links) {
@@ -391,12 +385,12 @@
                     .map(n => esc(n));
 
                 // Optional: bold your own name
-                const ME = "Charlie Hou";
-                for (let i = 0; i < names.length; i++) {
-                    if (names[i].replace(/<[^>]*>/g, '') === ME) {
-                        names[i] = `<span class="me">${names[i]}</span>`;
-                    }
-                }
+                // const ME = "Charlie Hou";
+                // for (let i = 0; i < names.length; i++) {
+                //   if (names[i].replace(/<[^>]*>/g,'') === ME) {
+                //     names[i] = `<span class="me">${names[i]}</span>`;
+                //   }
+                // }
 
                 authorsEl.innerHTML = names.join(', ');
                 authorsEl.style.marginTop = '.25rem';
