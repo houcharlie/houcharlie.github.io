@@ -425,14 +425,27 @@
         }
 
         (async function loadPapers() {
-            const listEl = document.getElementById('papers-list'); const loading = document.getElementById('papers-loading');
+            const listEl = document.getElementById('papers-list');
+            const loading = document.getElementById('papers-loading');
             try {
-                const res = await fetch('papers.json', { cache: 'no-store' }); if (!res.ok) throw new Error('fetch papers.json failed');
-                const data = await res.json(); if (!Array.isArray(data)) throw new Error('papers.json must be an array');
-                const items = data.slice().sort((a, b) => Date.parse(b.date || '1970-01-01') - Date.parse(a.date || '1970-01-01'));
-                const frag = document.createDocumentFragment(); for (const p of items) frag.appendChild(renderPaperEntry(p));
-                listEl.innerHTML = ''; listEl.appendChild(frag); listEl.hidden = false; loading?.remove();
-            } catch (e) { if (loading) loading.textContent = 'Could not load papers.json'; console.error(e); }
+                const res = await fetch('papers.json', { cache: 'no-store' });
+                if (!res.ok) throw new Error('fetch papers.json failed');
+                const data = await res.json();
+                if (!Array.isArray(data)) throw new Error('papers.json must be an array');
+
+                // Use the JSON order as-is (no sorting)
+                const frag = document.createDocumentFragment();
+                for (const p of data) {
+                    frag.appendChild(renderPaperEntry(p));  // your current renderer
+                }
+                listEl.innerHTML = '';
+                listEl.appendChild(frag);
+                listEl.hidden = false;
+                loading?.remove();
+            } catch (e) {
+                if (loading) loading.textContent = 'Could not load papers.json';
+                console.error(e);
+            }
         })();
         function renderTalkEntry(t) {
             const li = document.createElement('li');

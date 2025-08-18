@@ -45,7 +45,7 @@
             "Giulia Fanti",
             "Sewoong Oh"
         ],
-        "venue": "(Workshop)",
+        "venue": "In Review",
         "date": "2024-02-29", 
         "links": {
             "paper": "https://arxiv.org/abs/2402.18905"
@@ -69,6 +69,41 @@
         },
         "notes": "Oral presentation at ICML 2023 MFPL workshop" 
     },
+    
+    {
+        "title": "FedChain: Chained Algorithms for Near-Optimal Communication Cost in Federated Learning",
+        "authors": [
+            "Charlie Hou",
+            "Kiran Koshy Thekumparampil",
+            "Giulia Fanti",
+            "Sewoong Oh"
+        ],
+        "venue": "ICLR 2022",
+        "date": "2022-07-04", 
+        "links": {
+            "paper": "https://arxiv.org/abs/2108.06869"
+        },
+        "notes": "Oral presentation at ICML 2021 FL workshop" 
+    },
+    
+    {
+        "title": "SquirRL: Automating Attack Analysis on Blockchain Incentive Mechanisms with Deep Reinforcement Learning",
+        "authors": [
+            "Charlie Hou",
+            "Mingxun Zhou",
+            "Yan Ji",
+            "Phil Daian",
+            "Florian Tramer",
+            "Giulia Fanti",
+            "Ari Juels"
+        ],
+        "venue": "NDSS 2021",
+        "date": "2020-08-04", 
+        "links": {
+            "paper": "https://arxiv.org/abs/1912.01798"
+        },
+        "notes": "" 
+    },
     {
         "title": "Privately Customizing Prefinetuning to Better Match User Data in Federated Learning",
         "authors": [
@@ -88,21 +123,6 @@
         "notes": "ICLR 2023 TrustML workshop" 
     },
     {
-        "title": "FedChain: Chained Algorithms for Near-Optimal Communication Cost in Federated Learning",
-        "authors": [
-            "Charlie Hou",
-            "Kiran Koshy Thekumparampil",
-            "Giulia Fanti",
-            "Sewoong Oh"
-        ],
-        "venue": "ICLR 2022",
-        "date": "2022-07-04", 
-        "links": {
-            "paper": "https://arxiv.org/abs/2108.06869"
-        },
-        "notes": "Oral presentation at ICML 2021 FL workshop" 
-    },
-    {
         "title": "Efficient Algorithms for Saddle Point Optimization",
         "authors": [
             "Charlie Hou",
@@ -114,24 +134,6 @@
         "date": "2021-02-12", 
         "links": {
             "paper": "https://arxiv.org/abs/2102.06333"
-        },
-        "notes": "" 
-    },
-    {
-        "title": "SquirRL: Automating Attack Analysis on Blockchain Incentive Mechanisms with Deep Reinforcement Learning",
-        "authors": [
-            "Charlie Hou",
-            "Mingxun Zhou",
-            "Yan Ji",
-            "Phil Daian",
-            "Florian Tramer",
-            "Giulia Fanti",
-            "Ari Juels"
-        ],
-        "venue": "NDSS 2021",
-        "date": "2020-08-04", 
-        "links": {
-            "paper": "https://arxiv.org/abs/1912.01798"
         },
         "notes": "" 
     }
